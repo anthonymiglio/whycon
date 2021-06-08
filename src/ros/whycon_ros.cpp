@@ -4,6 +4,7 @@
 #include <tf/tf.h>
 #include <sstream>
 #include <geometry_msgs/PoseArray.h>
+#include <std_msgs/Bool.h> //anthonymiglio
 #include <yaml-cpp/yaml.h>
 #include <whycon/Projection.h>
 #include "whycon_ros.h"
@@ -42,8 +43,8 @@ whycon::WhyConROS::WhyConROS(ros::NodeHandle& n) : is_tracking(false), should_re
   image_pub = n.advertise<sensor_msgs::Image>("image_out", 1);
   poses_pub = n.advertise<geometry_msgs::PoseArray>("poses", 1);
   context_pub = n.advertise<sensor_msgs::Image>("context", 1);
-	projection_pub = n.advertise<whycon::Projection>("projection", 1);
-
+  projection_pub = n.advertise<whycon::Projection>("projection", 1);
+  is_tracking_pub = n.advertise<std_msgs::Bool>("is_tracking", 1);  
   reset_service = n.advertiseService("reset", &WhyConROS::reset, this);
 }
 
@@ -67,6 +68,14 @@ void whycon::WhyConROS::on_image(const sensor_msgs::ImageConstPtr& image_msg, co
   else if (image_pub.getNumSubscribers() != 0)
     image_pub.publish(cv_ptr);
 
+  bool publish_is_tracking = (is_tracking_pub.getNumSubscribers() != 0);
+
+  if (publish_is_tracking) {
+    std_msgs::Bool bool_aux;
+    bool_aux.data = is_tracking;
+    is_tracking_pub.publish(bool_aux);
+  }
+	
   if (context_pub.getNumSubscribers() != 0) {
     cv_bridge::CvImage cv_img_context;
     cv_img_context.encoding = cv_ptr->encoding;
