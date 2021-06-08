@@ -98,7 +98,7 @@ void whycon::WhyConROS::publish_results(const std_msgs::Header& header, const cv
   
   if (!publish_images && !publish_poses) return;
   
-  // prepare image outpu
+  // prepare image output
   cv::Mat output_image;
   if (publish_images)
     output_image = cv_ptr->image.clone();
