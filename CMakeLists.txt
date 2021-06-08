@@ -76,7 +76,7 @@ if(NOT DISABLE_ROS)
   #add_executable(triangulator src/ros/triangulator_node.cpp src/ros/triangulator.cpp)
   add_executable(robot_pose_publisher src/ros/robot_pose_publisher.cpp src/ros/robot_pose_publisher_node.cpp)  
   add_executable(transformer src/ros/transformer.cpp src/ros/transformer_node.cpp)
-  add_executable(landing_pad src/ros/Bebop_ROS_landing_pad.cpp)
+  add_executable(landing_pad src/ros/landing_pad_node.cpp)
 
   add_dependencies(whycon-node whycon_generate_messages_cpp)
   add_dependencies(whycon_nodelet whycon_generate_messages_cpp)
